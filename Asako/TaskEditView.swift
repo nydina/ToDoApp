@@ -8,13 +8,10 @@
 import SwiftUI
 
 struct TaskEditView: View {
-    
-   
-    
+
     @Environment(\.dismiss) var dismiss
-    @EnvironmentObject var dateHolder: TaskViewModel
+    @EnvironmentObject var taskViewModel: TaskViewModel
     @Environment(\.managedObjectContext) private var viewContext
-    
     
     @State var selectedTaskItem: TaskItem?
     @State var name: String
@@ -22,7 +19,6 @@ struct TaskEditView: View {
     @State var priority =  "High"
     @State var dueDate: Date
     @State var scheduleTime: Bool
-    
     
     init(passedTaskItem: TaskItem?, initialDate: Date) {
         if let taskItem = passedTaskItem {
@@ -44,9 +40,7 @@ struct TaskEditView: View {
         }
     }
     
-    var body: some View {
-        NavigationView {
-            Form {
+    var body: some View {            Form {
                 Section("Task") {
                     TextField("Task name", text: $name)
                     TextField("Task description", text: $desc)
@@ -76,7 +70,14 @@ struct TaskEditView: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .center)
             }
-        }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    ShareLink(item: selectedTaskItem?.name ?? "", subject: Text("New task assigned to you"), message: Text("Task: \(selectedTaskItem?.name ?? "")")) {
+                        Image(systemName: "square.and.arrow.up")
+                    }
+                }
+            }
+        
         .accentColor(.purple)
         
         
@@ -99,7 +100,7 @@ struct TaskEditView: View {
             selectedTaskItem?.dueDate = dueDate
             selectedTaskItem?.scheduleTime = scheduleTime
             
-            dateHolder.saveContext(viewContext)
+            taskViewModel.saveContext(viewContext)
             dismiss()
         }
     }
