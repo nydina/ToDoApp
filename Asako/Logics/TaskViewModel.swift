@@ -8,8 +8,13 @@
 import Foundation
 import SwiftUI
 import CoreData
+import UserNotifications
+
+
 
 class TaskViewModel: ObservableObject {
+    
+    
     @Published var date = Date()
     @Published var taskItems: [TaskItem] = []
     
@@ -49,4 +54,29 @@ class TaskViewModel: ObservableObject {
             fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
         }
     }
+
+    
+    func scheduleNotification() {
+        // Set the date for 8:00 AM the day before the desired date.
+        let calendar = Calendar(identifier: .gregorian)
+        var dateComponents = calendar.dateComponents([.year, .month, .day], from: date)
+        dateComponents.hour = 8
+        dateComponents.minute = 0
+        let triggerDate = calendar.date(from: dateComponents)!
+
+        let content = UNMutableNotificationContent()
+        content.title = "Hello"
+        content.body = "A task is due tommorow"
+
+        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
+
+        let request = UNNotificationRequest(identifier: "local_notification", content: content, trigger: trigger)
+
+        UNUserNotificationCenter.current().add(request) { error in
+            if let error = error {
+                print("Error scheduling notification: \(error)")
+            }
+        }
+    }
 }
+

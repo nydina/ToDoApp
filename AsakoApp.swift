@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+
 @main
 struct AsakoApp: App {
     let persistenceController = PersistenceController.shared
@@ -21,4 +22,37 @@ struct AsakoApp: App {
                 .environmentObject(dateHolder)
         }
     }
+    
+    private let notificationManager = NotificationManager()
+
+    init() {
+
+        setupNotifications()
+    }
+    
+    private func setupNotifications() {
+        notificationManager.notificationCenter.delegate = notificationManager
+        notificationManager.handleNotification = handleNotification
+
+        requestNotificationsPermission()
+    }
+    
+    private func handleNotification(notification: UNNotification) {
+        print("<<<DEV>>> Notification received: \(notification.request.content.userInfo)")
+    }
+
+    private func requestNotificationsPermission() {
+        notificationManager.requestPermission(completionHandler: { isGranted, error in
+            if isGranted {
+                // handle granted success
+            }
+
+            if let _ = error {
+                // handle error
+
+                return
+            }
+        })
+    }
+    
 }

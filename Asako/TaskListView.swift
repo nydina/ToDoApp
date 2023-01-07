@@ -17,7 +17,7 @@ struct TaskListView: View {
     var body: some View {
         NavigationView {
             VStack {
-                List{
+                List {
                     ForEach(filteredTaskItems()) { taskItem in
                         ZStack {
                             NavigationLink(destination:
@@ -60,6 +60,7 @@ struct TaskListView: View {
                 }
             }
         }
+        .onAppear {taskViewModel.scheduleNotification()}
         .accentColor(.purple)
     }
     
