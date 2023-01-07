@@ -15,7 +15,7 @@
 		BB13E67B2965A19600F75B9E /* Asako.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BB13E6792965A19600F75B9E /* Asako.xcdatamodeld */; };
 		BB13E6822965C41C00F75B9E /* TaskEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB13E6812965C41C00F75B9E /* TaskEditView.swift */; };
 		BB13E6842965D93500F75B9E /* TaskRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB13E6832965D93500F75B9E /* TaskRow.swift */; };
-		BB4B10572966C941003C9772 /* DateHolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB4B10562966C941003C9772 /* DateHolder.swift */; };
+		BB4B10572966C941003C9772 /* TaskViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB4B10562966C941003C9772 /* TaskViewModel.swift */; };
 		BB4B10592966DB79003C9772 /* CheckBoxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB4B10582966DB79003C9772 /* CheckBoxView.swift */; };
 		BB4B105D2966DE1C003C9772 /* TaskItemExtension .swift in Sources */ = {isa = PBXBuildFile; fileRef = BB4B105C2966DE1C003C9772 /* TaskItemExtension .swift */; };
 		BB4B105F296816D5003C9772 /* TaskFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB4B105E296816D5003C9772 /* TaskFilter.swift */; };
@@ -32,7 +32,7 @@
 		BB13E67A2965A19600F75B9E /* Asako.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Asako.xcdatamodel; sourceTree = "<group>"; };
 		BB13E6812965C41C00F75B9E /* TaskEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskEditView.swift; sourceTree = "<group>"; };
 		BB13E6832965D93500F75B9E /* TaskRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskRow.swift; sourceTree = "<group>"; };
-		BB4B10562966C941003C9772 /* DateHolder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateHolder.swift; sourceTree = "<group>"; };
+		BB4B10562966C941003C9772 /* TaskViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskViewModel.swift; sourceTree = "<group>"; };
 		BB4B10582966DB79003C9772 /* CheckBoxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckBoxView.swift; sourceTree = "<group>"; };
 		BB4B105C2966DE1C003C9772 /* TaskItemExtension .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TaskItemExtension .swift"; sourceTree = "<group>"; };
 		BB4B105E296816D5003C9772 /* TaskFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskFilter.swift; sourceTree = "<group>"; };
@@ -102,7 +102,7 @@
 		BB4B105B2966DD35003C9772 /* Logics */ = {
 			isa = PBXGroup;
 			children = (
-				BB4B10562966C941003C9772 /* DateHolder.swift */,
+				BB4B10562966C941003C9772 /* TaskViewModel.swift */,
 				BB13E6772965A19600F75B9E /* Persistence.swift */,
 				BB4B105C2966DE1C003C9772 /* TaskItemExtension .swift */,
 				BB4B105E296816D5003C9772 /* TaskFilter.swift */,
@@ -181,7 +181,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BB4B105D2966DE1C003C9772 /* TaskItemExtension .swift in Sources */,
-				BB4B10572966C941003C9772 /* DateHolder.swift in Sources */,
+				BB4B10572966C941003C9772 /* TaskViewModel.swift in Sources */,
 				BB4B105F296816D5003C9772 /* TaskFilter.swift in Sources */,
 				BB13E6782965A19600F75B9E /* Persistence.swift in Sources */,
 				BB4B106329686B1F003C9772 /* PriorityView.swift in Sources */,

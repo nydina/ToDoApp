@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TaskRow: View {
-    @EnvironmentObject var dateHolder: DateHolder
+    @EnvironmentObject var dateHolder: TaskViewModel
     @ObservedObject var passedTaskItem: TaskItem
     
     var body: some View {

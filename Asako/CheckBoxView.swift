@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CheckBoxView: View {
     @Environment(\.managedObjectContext) private var viewContext
-    @EnvironmentObject var dateHolder: DateHolder
+    @EnvironmentObject var dateHolder: TaskViewModel
     @ObservedObject var passedTaskItem: TaskItem
     
     var body: some View {

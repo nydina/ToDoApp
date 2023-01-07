@@ -1,5 +1,5 @@
 //
-//  DateHolder.swift
+//  TaskViewModel.swift
 //  Asako
 //
 //  Created by Dina Andrianarijaona on 05/01/2023.
@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 import CoreData
 
-class DateHolder: ObservableObject {
+class TaskViewModel: ObservableObject {
     @Published var date = Date()
     @Published var taskItems: [TaskItem] = []
     
@@ -18,7 +18,6 @@ class DateHolder: ObservableObject {
     init() {
         fecthTasks()
     }
-    
     
     func fecthTasks() {
         let request = NSFetchRequest<TaskItem>(entityName: "TaskItem")
@@ -50,12 +49,4 @@ class DateHolder: ObservableObject {
             fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
         }
     }
-    
-    //    @MainActor func reload(_ context: NSManagedObjectContext) {
-    //         do {
-    //             taskItems = refreshTaskItems(context)
-    //         } catch let error {
-    //             fatalError("Unresolved error \(error)")
-    //         }
-    //     }
 }

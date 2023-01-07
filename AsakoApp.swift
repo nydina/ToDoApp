@@ -14,7 +14,7 @@ struct AsakoApp: App {
     var body: some Scene {
         WindowGroup {
             let context = persistenceController.container.viewContext
-            let dateHolder = DateHolder()
+            let dateHolder = TaskViewModel()
             
             TaskListView()
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)

@@ -11,12 +11,9 @@ import CoreData
 /// \
 struct TaskListView: View {
     @Environment(\.managedObjectContext) private var viewContext
-    @EnvironmentObject var dateHolder: DateHolder
+    @EnvironmentObject var taskViewModel: TaskViewModel
     @State var selectedFilter = TaskFilter.All
-    //    @State var arrayCount: Int = 0
-    
-    
-
+  
     var body: some View {
         NavigationView {
             VStack {
@@ -24,7 +21,7 @@ struct TaskListView: View {
                     ForEach(filteredTaskItems()) { taskItem in
                         ZStack {
                             NavigationLink(destination:
-                                            TaskEditView(passedTaskItem: taskItem, initialDate: Date()).environmentObject(dateHolder)
+                                            TaskEditView(passedTaskItem: taskItem, initialDate: Date()).environmentObject(taskViewModel)
                             ) {
                                 EmptyView()
                             }
@@ -42,10 +39,10 @@ struct TaskListView: View {
                             ForEach(TaskFilter.allFilters, id: \.self) {
                                 filter in
                                 Text(filter.rawValue)
-                            }                        }
+                            }
+                        }
                     }
                 }
-                //                .listStyle(.grouped)
                 
                 NavigationLink {
                     TaskEditView(passedTaskItem: nil, initialDate: Date())
@@ -61,38 +58,32 @@ struct TaskListView: View {
                     .padding(.leading)
                     
                 }
-                
-                
             }
-            
         }
-        
         .accentColor(.purple)
-        
-        
     }
     
     private func filteredTaskItems() -> [TaskItem] {
         if selectedFilter == TaskFilter.Completed {
-            return dateHolder.taskItems.filter {$0.isCompleted()}
+            return taskViewModel.taskItems.filter {$0.isCompleted()}
         }
         
         if selectedFilter == TaskFilter.NonCompleted {
-            return dateHolder.taskItems.filter {!$0.isCompleted()}
+            return taskViewModel.taskItems.filter {!$0.isCompleted()}
         }
         
         if selectedFilter == TaskFilter.OverDue {
-            return dateHolder.taskItems.filter {$0.isOverdue()}
+            return taskViewModel.taskItems.filter {$0.isOverdue()}
         }
         
-        return dateHolder.taskItems
+        return taskViewModel.taskItems
     }
     
     private func deleteItems(offsets: IndexSet) {
         withAnimation {
             offsets.map { filteredTaskItems()[$0] }.forEach(viewContext.delete)
             
-            dateHolder.saveContext(viewContext)
+            taskViewModel.saveContext(viewContext)
         }
     }
 }

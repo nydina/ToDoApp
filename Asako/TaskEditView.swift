@@ -12,7 +12,7 @@ struct TaskEditView: View {
    
     
     @Environment(\.dismiss) var dismiss
-    @EnvironmentObject var dateHolder: DateHolder
+    @EnvironmentObject var dateHolder: TaskViewModel
     @Environment(\.managedObjectContext) private var viewContext
     
     
