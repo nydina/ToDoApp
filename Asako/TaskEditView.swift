@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TaskEditView: View {
-
+    
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var taskViewModel: TaskViewModel
     @Environment(\.managedObjectContext) private var viewContext
@@ -41,44 +41,48 @@ struct TaskEditView: View {
     }
     
     var body: some View {            Form {
-                Section("Task") {
-                    TextField("Task name", text: $name)
-                    TextField("Task description", text: $desc)
+        Section("Task") {
+            TextField("Task name", text: $name)
+            TextField("Task description", text: $desc)
+        }
+        Section("Priority") {
+            Picker("", selection: $priority) {
+                ForEach(["High", "Normal", "Low"], id: \.self) { priority in
+                    Text(priority)
                 }
-                Section("Priority") {
-                    Picker("", selection: $priority) {
-                        ForEach(["High", "Normal", "Low"], id: \.self) { priority in
-                            Text(priority)
-                        }
-                    }              .frame(maxWidth: .infinity)
-                    .pickerStyle(.segmented)
-                }
-                Section("Due Date") {
-                    Toggle("Schedule Time", isOn: $scheduleTime)
-                    DatePicker("Due Date", selection: $dueDate, displayedComponents: displayComps())
-                }
-                
-                if selectedTaskItem?.isCompleted() ?? false {
-                    Section("Completed", content: {
-                        Text(selectedTaskItem?.completedDate?.formatted(date: .abbreviated, time: .shortened) ?? "")
-                            .foregroundColor(.green)
-                    })
-                }
-                
-                Button("Save") {
-                    saveAction()
-                }
-                .frame(maxWidth: .infinity, alignment: .center)
-            }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    ShareLink(item: selectedTaskItem?.name ?? "", subject: Text("New task assigned to you"), message: Text("Task: \(selectedTaskItem?.name ?? "")")) {
-                        Image(systemName: "square.and.arrow.up")
-                    }
-                }
-            }
+            }              .frame(maxWidth: .infinity)
+                .pickerStyle(.segmented)
+        }
+        Section("Due Date") {
+            Toggle("Schedule Time", isOn: $scheduleTime)
+            DatePicker("Due Date", selection: $dueDate,in: Date()..., displayedComponents: displayComps())
+        }
         
-        .accentColor(.purple)
+        if selectedTaskItem?.isCompleted() ?? false {
+            Section("Completed", content: {
+                Text(selectedTaskItem?.completedDate?.formatted(date: .abbreviated, time: .shortened) ?? "")
+                    .foregroundColor(.green)
+            })
+        }
+        
+        Button("Save") {
+            saveAction(completion: {task in
+                taskViewModel.scheduleNotification(task: task) })
+            
+        }
+        .disabled(name == "")
+        .frame(maxWidth: .infinity, alignment: .center)
+    }
+    .toolbar {
+        ToolbarItem(placement: .navigationBarTrailing) {
+            ShareLink(item: selectedTaskItem?.name ?? "", subject: Text("New task assigned to you"), message: Text("Task: \(selectedTaskItem?.name ?? ""), Task due date: \(selectedTaskItem?.dueDate?.formatted(date: .long, time: .shortened) ?? "")")) {
+                Image(systemName: "square.and.arrow.up")            }
+            
+        }
+        
+    }
+        
+    .tint(.accentColor)
         
         
         
@@ -88,11 +92,12 @@ struct TaskEditView: View {
         return scheduleTime ? [.hourAndMinute,  .date] : [.date]
     }
     
-    func saveAction() {
+    func saveAction(completion: (_ task: TaskItem)-> Void) {
         withAnimation {
             if selectedTaskItem == nil {
                 selectedTaskItem = TaskItem(context: viewContext)
             }
+            selectedTaskItem?.id = UUID()
             selectedTaskItem?.created = Date()
             selectedTaskItem?.name = name
             selectedTaskItem?.desc = desc
@@ -101,6 +106,10 @@ struct TaskEditView: View {
             selectedTaskItem?.scheduleTime = scheduleTime
             
             taskViewModel.saveContext(viewContext)
+            
+            if let selectedTaskItem = selectedTaskItem {
+                completion(selectedTaskItem)
+            }
             dismiss()
         }
     }

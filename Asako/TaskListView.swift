@@ -8,37 +8,71 @@
 import SwiftUI
 import CoreData
 
-/// \
 struct TaskListView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @EnvironmentObject var taskViewModel: TaskViewModel
     @State var selectedFilter = TaskFilter.All
-  
+    
     var body: some View {
         NavigationView {
             VStack {
-                List {
-                    ForEach(filteredTaskItems()) { taskItem in
-                        ZStack {
-                            NavigationLink(destination:
-                                            TaskEditView(passedTaskItem: taskItem, initialDate: Date()).environmentObject(taskViewModel)
-                            ) {
-                                EmptyView()
+                if filteredTaskItems() == [] {
+                    HStack {
+                        Text("No task to date ")
+                            .font(.title3)
+                            .padding()
+                        Spacer()
+                    }
+                    List {
+                        ForEach(filteredTaskItems()) { taskItem in
+                            ZStack {
+                                NavigationLink(destination:
+                                                TaskEditView(passedTaskItem: taskItem, initialDate: Date()).environmentObject(taskViewModel)
+                                ) {
+                                    EmptyView()
+                                }
+                                
+                                TaskRow(passedTaskItem: taskItem)
+                                Spacer()
                             }
-                            
-                            TaskRow(passedTaskItem: taskItem)
-                            Spacer()
+                        }
+                        .onDelete(perform: deleteItems)
+                    }
+                    .listStyle(.plain)
+                    .toolbar {
+                        ToolbarItem(placement: .confirmationAction) {
+                            Picker("", selection: $selectedFilter.animation()) {
+                                ForEach(TaskFilter.allFilters, id: \.self) {
+                                    filter in
+                                    Text(filter.rawValue)
+                                }
+                            }
                         }
                     }
-                    .onDelete(perform: deleteItems)
-                }
-                .listStyle(.plain)
-                .toolbar {
-                    ToolbarItem(placement: .confirmationAction) {
-                        Picker("", selection: $selectedFilter.animation()) {
-                            ForEach(TaskFilter.allFilters, id: \.self) {
-                                filter in
-                                Text(filter.rawValue)
+                } else {
+                    List {
+                        ForEach(filteredTaskItems()) { taskItem in
+                            ZStack {
+                                NavigationLink(destination:
+                                                TaskEditView(passedTaskItem: taskItem, initialDate: Date()).environmentObject(taskViewModel)
+                                ) {
+                                    EmptyView()
+                                }
+                                
+                                TaskRow(passedTaskItem: taskItem)
+                                Spacer()
+                            }
+                        }
+                        .onDelete(perform: deleteItems)
+                    }
+                    .listStyle(.plain)
+                    .toolbar {
+                        ToolbarItem(placement: .confirmationAction) {
+                            Picker("", selection: $selectedFilter.animation()) {
+                                ForEach(TaskFilter.allFilters, id: \.self) {
+                                    filter in
+                                    Text(filter.rawValue)
+                                }
                             }
                         }
                     }
@@ -52,16 +86,17 @@ struct TaskListView: View {
                             .font(.largeTitle)
                         Text("New Task")
                             .bold()
-                            .foregroundColor(.purple)
+                            .foregroundColor(.accentColor)
                             .frame(maxWidth: .infinity, alignment: .leading)
                     }
                     .padding(.leading)
                     
                 }
             }
+            .navigationTitle("To Do")
         }
-        .onAppear {taskViewModel.scheduleNotification()}
-        .accentColor(.purple)
+        
+        .tint(.accentColor)
     }
     
     private func filteredTaskItems() -> [TaskItem] {

@@ -56,27 +56,37 @@ class TaskViewModel: ObservableObject {
     }
 
     
-    func scheduleNotification() {
-        // Set the date for 8:00 AM the day before the desired date.
-        let calendar = Calendar(identifier: .gregorian)
-        var dateComponents = calendar.dateComponents([.year, .month, .day], from: date)
-        dateComponents.hour = 8
-        dateComponents.minute = 0
-        let triggerDate = calendar.date(from: dateComponents)!
-
+    func scheduleNotification(task: TaskItem) {
+        // Configuring the notification content
         let content = UNMutableNotificationContent()
-        content.title = "Hello"
-        content.body = "A task is due tommorow"
+        content.title = "A task is due"
+        content.body = "\(task.name!), due for: \(task.dueDate!)"
+        
+        // Configure the recurring date.
+        let calendar = Calendar.current
 
-        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
+        // notify 1hour before deadline
+        let justBeforeDueDate = calendar.date(byAdding: .hour, value: -1, to: task.dueDate ?? Date())
+        let dateComponents = calendar.dateComponents([.year, .month, .day, .hour, .minute], from: justBeforeDueDate ?? Date())
+       
+           
+        // Create the trigger as a repeating event.
+        let trigger = UNCalendarNotificationTrigger(
+                 dateMatching: dateComponents, repeats: false)
+        
+        // Create the request
+        let uuidString = UUID().uuidString
+        let request = UNNotificationRequest(identifier: task.id?.uuidString ?? uuidString,
+                    content: content, trigger: trigger)
 
-        let request = UNNotificationRequest(identifier: "local_notification", content: content, trigger: trigger)
-
-        UNUserNotificationCenter.current().add(request) { error in
-            if let error = error {
-                print("Error scheduling notification: \(error)")
-            }
+        // Schedule the request with the system.
+        let notificationCenter = UNUserNotificationCenter.current()
+        notificationCenter.add(request) { (error) in
+           if error != nil {
+              // Handle any errors.
+           }
         }
+        
     }
 }
 

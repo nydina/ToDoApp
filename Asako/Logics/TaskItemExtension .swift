@@ -22,7 +22,7 @@ extension TaskItem {
     }
     
     func overdureColor() -> Color {
-        return isOverdue() ? .red : .black
+        return isOverdue() ? .red : .primary
     }
     
     func isHighPriority() -> Bool {

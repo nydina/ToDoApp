@@ -21,7 +21,6 @@
 		BB4B105F296816D5003C9772 /* TaskFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB4B105E296816D5003C9772 /* TaskFilter.swift */; };
 		BB4B106329686B1F003C9772 /* PriorityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB4B106229686B1F003C9772 /* PriorityView.swift */; };
 		BB4B106529695B48003C9772 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB4B106429695B48003C9772 /* NotificationManager.swift */; };
-		BB4B106729695BB3003C9772 /* NotificationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB4B106629695BB3003C9772 /* NotificationHelper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,7 +39,6 @@
 		BB4B105E296816D5003C9772 /* TaskFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskFilter.swift; sourceTree = "<group>"; };
 		BB4B106229686B1F003C9772 /* PriorityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriorityView.swift; sourceTree = "<group>"; };
 		BB4B106429695B48003C9772 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
-		BB4B106629695BB3003C9772 /* NotificationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHelper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,7 +109,6 @@
 				BB4B105C2966DE1C003C9772 /* TaskItemExtension .swift */,
 				BB4B105E296816D5003C9772 /* TaskFilter.swift */,
 				BB4B106429695B48003C9772 /* NotificationManager.swift */,
-				BB4B106629695BB3003C9772 /* NotificationHelper.swift */,
 			);
 			path = Logics;
 			sourceTree = "<group>";
@@ -192,7 +189,6 @@
 				BB13E6782965A19600F75B9E /* Persistence.swift in Sources */,
 				BB4B106329686B1F003C9772 /* PriorityView.swift in Sources */,
 				BB13E67B2965A19600F75B9E /* Asako.xcdatamodeld in Sources */,
-				BB4B106729695BB3003C9772 /* NotificationHelper.swift in Sources */,
 				BB4B106529695B48003C9772 /* NotificationManager.swift in Sources */,
 				BB13E6842965D93500F75B9E /* TaskRow.swift in Sources */,
 				BB13E6712965A19400F75B9E /* TaskListView.swift in Sources */,
