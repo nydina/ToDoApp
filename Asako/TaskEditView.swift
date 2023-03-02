@@ -76,7 +76,8 @@ struct TaskEditView: View {
     .toolbar {
         ToolbarItem(placement: .navigationBarTrailing) {
             ShareLink(item: selectedTaskItem?.name ?? "", subject: Text("New task assigned to you"), message: Text("Task: \(selectedTaskItem?.name ?? ""), Task due date: \(selectedTaskItem?.dueDate?.formatted(date: .long, time: .shortened) ?? "")")) {
-                Image(systemName: "square.and.arrow.up")            }
+                Image(systemName: "square.and.arrow.up")            }.disabled(name == "" || scheduleTime == false)
+                .accessibilityLabel("shareTask")
             
         }
         
