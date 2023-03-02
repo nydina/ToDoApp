@@ -18,7 +18,7 @@ struct TaskListView: View {
             VStack {
                 if filteredTaskItems() == [] {
                     HStack {
-                        Text("No task to date ")
+                        Text("No task to date")
                             .font(.title3)
                             .padding()
                         Spacer()
@@ -92,8 +92,10 @@ struct TaskListView: View {
                     .padding(.leading)
                     
                 }
+                .accessibilityLabel("Add new task")
+                
             }
-            .navigationTitle("To Do")
+            .navigationTitle("To Do List")
         }
         
         .tint(.accentColor)

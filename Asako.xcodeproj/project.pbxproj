@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BB04B5EA29B0F00500343F15 /* AsakoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB04B5E929B0F00500343F15 /* AsakoUITests.swift */; };
+		BB04B5EC29B0F00500343F15 /* AsakoUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB04B5EB29B0F00500343F15 /* AsakoUITestsLaunchTests.swift */; };
 		BB13E66F2965A19400F75B9E /* AsakoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB13E66E2965A19400F75B9E /* AsakoApp.swift */; };
 		BB13E6712965A19400F75B9E /* TaskListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB13E6702965A19400F75B9E /* TaskListView.swift */; };
 		BB13E6732965A19600F75B9E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BB13E6722965A19600F75B9E /* Assets.xcassets */; };
@@ -23,7 +25,20 @@
 		BB4B106529695B48003C9772 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB4B106429695B48003C9772 /* NotificationManager.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		BB04B5ED29B0F00500343F15 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BB13E6632965A19400F75B9E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BB13E66A2965A19400F75B9E;
+			remoteInfo = Asako;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		BB04B5E729B0F00500343F15 /* AsakoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AsakoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		BB04B5E929B0F00500343F15 /* AsakoUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsakoUITests.swift; sourceTree = "<group>"; };
+		BB04B5EB29B0F00500343F15 /* AsakoUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsakoUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		BB13E66B2965A19400F75B9E /* Asako.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Asako.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB13E66E2965A19400F75B9E /* AsakoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsakoApp.swift; sourceTree = "<group>"; };
 		BB13E6702965A19400F75B9E /* TaskListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListView.swift; sourceTree = "<group>"; };
@@ -42,6 +57,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		BB04B5E429B0F00500343F15 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BB13E6682965A19400F75B9E /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -52,11 +74,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		BB04B5E829B0F00500343F15 /* AsakoUITests */ = {
+			isa = PBXGroup;
+			children = (
+				BB04B5E929B0F00500343F15 /* AsakoUITests.swift */,
+				BB04B5EB29B0F00500343F15 /* AsakoUITestsLaunchTests.swift */,
+			);
+			path = AsakoUITests;
+			sourceTree = "<group>";
+		};
 		BB13E6622965A19400F75B9E = {
 			isa = PBXGroup;
 			children = (
 				BB13E66E2965A19400F75B9E /* AsakoApp.swift */,
 				BB13E66D2965A19400F75B9E /* Asako */,
+				BB04B5E829B0F00500343F15 /* AsakoUITests */,
 				BB13E66C2965A19400F75B9E /* Products */,
 			);
 			sourceTree = "<group>";
@@ -65,6 +97,7 @@
 			isa = PBXGroup;
 			children = (
 				BB13E66B2965A19400F75B9E /* Asako.app */,
+				BB04B5E729B0F00500343F15 /* AsakoUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -116,6 +149,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		BB04B5E629B0F00500343F15 /* AsakoUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BB04B5F129B0F00500343F15 /* Build configuration list for PBXNativeTarget "AsakoUITests" */;
+			buildPhases = (
+				BB04B5E329B0F00500343F15 /* Sources */,
+				BB04B5E429B0F00500343F15 /* Frameworks */,
+				BB04B5E529B0F00500343F15 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				BB04B5EE29B0F00500343F15 /* PBXTargetDependency */,
+			);
+			name = AsakoUITests;
+			productName = AsakoUITests;
+			productReference = BB04B5E729B0F00500343F15 /* AsakoUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		BB13E66A2965A19400F75B9E /* Asako */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = BB13E67E2965A19600F75B9E /* Build configuration list for PBXNativeTarget "Asako" */;
@@ -140,9 +191,13 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1410;
+				LastSwiftUpdateCheck = 1420;
 				LastUpgradeCheck = 1410;
 				TargetAttributes = {
+					BB04B5E629B0F00500343F15 = {
+						CreatedOnToolsVersion = 14.2;
+						TestTargetID = BB13E66A2965A19400F75B9E;
+					};
 					BB13E66A2965A19400F75B9E = {
 						CreatedOnToolsVersion = 14.1;
 					};
@@ -162,11 +217,19 @@
 			projectRoot = "";
 			targets = (
 				BB13E66A2965A19400F75B9E /* Asako */,
+				BB04B5E629B0F00500343F15 /* AsakoUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		BB04B5E529B0F00500343F15 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BB13E6692965A19400F75B9E /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -179,6 +242,15 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		BB04B5E329B0F00500343F15 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BB04B5EC29B0F00500343F15 /* AsakoUITestsLaunchTests.swift in Sources */,
+				BB04B5EA29B0F00500343F15 /* AsakoUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BB13E6672965A19400F75B9E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -200,7 +272,51 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		BB04B5EE29B0F00500343F15 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BB13E66A2965A19400F75B9E /* Asako */;
+			targetProxy = BB04B5ED29B0F00500343F15 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		BB04B5EF29B0F00500343F15 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = PNNF7SDSX3;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = nydina.AsakoUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Asako;
+			};
+			name = Debug;
+		};
+		BB04B5F029B0F00500343F15 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = PNNF7SDSX3;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = nydina.AsakoUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Asako;
+			};
+			name = Release;
+		};
 		BB13E67C2965A19600F75B9E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -376,6 +492,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		BB04B5F129B0F00500343F15 /* Build configuration list for PBXNativeTarget "AsakoUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BB04B5EF29B0F00500343F15 /* Debug */,
+				BB04B5F029B0F00500343F15 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		BB13E6662965A19400F75B9E /* Build configuration list for PBXProject "Asako" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
