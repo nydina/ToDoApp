@@ -39,15 +39,19 @@ final class AsakoUITests: XCTestCase {
         
         XCTAssert(app.otherElements.buttons["Add new task"].exists)
         
-//        XCTAssert(app.staticTexts["No task to date"].exists)
-        
     }
     
     func testEditView() throws {
+        // Count the number of rows in the list before adding a new task
+        let rowCount = app.collectionViews.cells.count
+        
+        // Hit on the Add new task button
         app.otherElements.buttons["Add new task"].tap()
         
+        // check if back button exists
         XCTAssert(app.navigationBars.buttons["To Do List"].exists)
         
+        // check if share task button exists
         XCTAssert(app.navigationBars.buttons["shareTask"].exists)
         
         // make sure ShareLink is not enabled unless conditions are filled (task title filled in + schedule time enabled)
@@ -75,6 +79,18 @@ final class AsakoUITests: XCTestCase {
         
         app.buttons["Save"].tap()
         
+        // Come back to the list view
+        XCTAssert(app.navigationBars["To Do List"].waitForExistence(timeout: 2))
+        
+        // Check if Save button actually added the task
+        XCTAssertEqual(app.collectionViews.cells.count, rowCount + 1)
+        
+        // Delete added row
+        app.collectionViews.cells.element.firstMatch.swipeLeft()
+        app.buttons["Delete"].tap()
+        
+        // Check if "No task to date" appear when there is no todo
+        XCTAssert(app.staticTexts["No task to date"].exists)
     }
     
 }

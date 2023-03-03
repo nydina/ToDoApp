@@ -10,11 +10,9 @@ import SwiftUI
 import CoreData
 import UserNotifications
 
-
-
 class TaskViewModel: ObservableObject {
-    
-    
+    @Environment (\.managedObjectContext) private var viewContext
+    @Published var selectedTaskItem: TaskItem?
     @Published var date = Date()
     @Published var taskItems: [TaskItem] = []
     
@@ -54,13 +52,36 @@ class TaskViewModel: ObservableObject {
             fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
         }
     }
+    
+    func saveAction(id: UUID, created: Date, name: String, desc: String, priority: String, dueDate: Date, scheduleTime: Bool, viewContext: NSManagedObjectContext, completion: (_ task: TaskItem)-> Void) {
+        withAnimation {
+            if selectedTaskItem == nil {
+                selectedTaskItem = TaskItem(context: viewContext)
+            }
+            selectedTaskItem?.id = UUID()
+            selectedTaskItem?.created = Date()
+            selectedTaskItem?.name = name
+            selectedTaskItem?.desc = desc
+            selectedTaskItem?.priority = priority
+            selectedTaskItem?.dueDate = dueDate
+            selectedTaskItem?.scheduleTime = scheduleTime
+            
+           saveContext(viewContext)
+            
+            if let selectedTaskItem = selectedTaskItem {
+                completion(selectedTaskItem)
+            }
+            
+//            return selectedTaskItem!
+        }
+    }
 
     
     func scheduleNotification(task: TaskItem) {
         // Configuring the notification content
         let content = UNMutableNotificationContent()
-        content.title = "A task is due"
-        content.body = "\(task.name!), due for: \(task.dueDate!)"
+        content.title = "Task awaiting: \(task.name ?? "Sing")"
+        content.body = "Due date: \(task.dueDate ?? Date())"
         
         // Configure the recurring date.
         let calendar = Calendar.current

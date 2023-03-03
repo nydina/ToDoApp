@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct TaskEditView: View {
-    
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var taskViewModel: TaskViewModel
     @Environment(\.managedObjectContext) private var viewContext
@@ -65,9 +64,12 @@ struct TaskEditView: View {
             })
         }
         
-        Button("Save") {
-            saveAction(completion: {task in
-                taskViewModel.scheduleNotification(task: task) })
+        Button(selectedTaskItem == nil ? "Save" : "Uptade") {
+            taskViewModel.saveAction(id: UUID(), created: Date(), name: name, desc: desc, priority: priority, dueDate: dueDate, scheduleTime: scheduleTime, viewContext: viewContext, completion: {task in
+                if scheduleTime {
+                    taskViewModel.scheduleNotification(task: task)} })
+                        
+                dismiss()
             
         }
         .disabled(name == "")
@@ -85,35 +87,13 @@ struct TaskEditView: View {
         
     .tint(.accentColor)
         
-        
-        
     }
     
     func displayComps() -> DatePickerComponents {
         return scheduleTime ? [.hourAndMinute,  .date] : [.date]
     }
     
-    func saveAction(completion: (_ task: TaskItem)-> Void) {
-        withAnimation {
-            if selectedTaskItem == nil {
-                selectedTaskItem = TaskItem(context: viewContext)
-            }
-            selectedTaskItem?.id = UUID()
-            selectedTaskItem?.created = Date()
-            selectedTaskItem?.name = name
-            selectedTaskItem?.desc = desc
-            selectedTaskItem?.priority = priority
-            selectedTaskItem?.dueDate = dueDate
-            selectedTaskItem?.scheduleTime = scheduleTime
-            
-            taskViewModel.saveContext(viewContext)
-            
-            if let selectedTaskItem = selectedTaskItem {
-                completion(selectedTaskItem)
-            }
-            dismiss()
-        }
-    }
+    
 }
 
 struct TaskEditView_Previews: PreviewProvider {
