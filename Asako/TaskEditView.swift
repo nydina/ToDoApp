@@ -65,11 +65,11 @@ struct TaskEditView: View {
         }
         
         Button(selectedTaskItem == nil ? "Save" : "Uptade") {
-            taskViewModel.saveAction(id: UUID(), created: Date(), name: name, desc: desc, priority: priority, dueDate: dueDate, scheduleTime: scheduleTime, viewContext: viewContext, completion: {task in
+            taskViewModel.saveAction(id: UUID(), created: Date(), name: name, desc: desc, priority: priority, dueDate: dueDate, scheduleTime: scheduleTime, completion: {task in
                 if scheduleTime {
                     taskViewModel.scheduleNotification(task: task)} })
-                        
-                dismiss()
+            
+            dismiss()
             
         }
         .disabled(name == "")
@@ -78,8 +78,9 @@ struct TaskEditView: View {
     .toolbar {
         ToolbarItem(placement: .navigationBarTrailing) {
             ShareLink(item: selectedTaskItem?.name ?? "", subject: Text("New task assigned to you"), message: Text("Task: \(selectedTaskItem?.name ?? ""), Task due date: \(selectedTaskItem?.dueDate?.formatted(date: .long, time: .shortened) ?? "")")) {
-                Image(systemName: "square.and.arrow.up")            }.disabled(name == "" || scheduleTime == false)
-                .accessibilityLabel("shareTask")
+                Image(systemName: "square.and.arrow.up")            }
+            .disabled(name == "" || scheduleTime == false)
+            .accessibilityLabel("shareTask")
             
         }
         

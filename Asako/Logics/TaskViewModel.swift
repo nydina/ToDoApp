@@ -11,7 +11,7 @@ import CoreData
 import UserNotifications
 
 class TaskViewModel: ObservableObject {
-    @Environment (\.managedObjectContext) private var viewContext
+    @Published var selectedFilter = TaskFilter.All
     @Published var selectedTaskItem: TaskItem?
     @Published var date = Date()
     @Published var taskItems: [TaskItem] = []
@@ -53,10 +53,10 @@ class TaskViewModel: ObservableObject {
         }
     }
     
-    func saveAction(id: UUID, created: Date, name: String, desc: String, priority: String, dueDate: Date, scheduleTime: Bool, viewContext: NSManagedObjectContext, completion: (_ task: TaskItem)-> Void) {
+    func saveAction(id: UUID, created: Date, name: String, desc: String, priority: String, dueDate: Date, scheduleTime: Bool, completion: (_ task: TaskItem)-> Void) {
         withAnimation {
             if selectedTaskItem == nil {
-                selectedTaskItem = TaskItem(context: viewContext)
+                selectedTaskItem = TaskItem(context: container.viewContext)
             }
             selectedTaskItem?.id = UUID()
             selectedTaskItem?.created = Date()
@@ -66,16 +66,37 @@ class TaskViewModel: ObservableObject {
             selectedTaskItem?.dueDate = dueDate
             selectedTaskItem?.scheduleTime = scheduleTime
             
-           saveContext(viewContext)
+            saveContext(container.viewContext)
             
             if let selectedTaskItem = selectedTaskItem {
                 completion(selectedTaskItem)
             }
+                    }
+    }
+    
+    func filteredTaskItems() -> [TaskItem] {
+        if selectedFilter == TaskFilter.Completed {
+            return taskItems.filter {$0.isCompleted()}
+        }
+        
+        if selectedFilter == TaskFilter.NonCompleted {
+            return taskItems.filter {!$0.isCompleted()}
+        }
+        
+        if selectedFilter == TaskFilter.OverDue {
+            return taskItems.filter {$0.isOverdue()}
+        }
+        
+        return taskItems
+    }
+    
+    func deleteItems(offsets: IndexSet) {
+        withAnimation {
+            offsets.map { taskItems[$0] }.forEach(container.viewContext.delete)
             
-//            return selectedTaskItem!
+            saveContext(container.viewContext)
         }
     }
-
     
     func scheduleNotification(task: TaskItem) {
         // Configuring the notification content

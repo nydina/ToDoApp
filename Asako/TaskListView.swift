@@ -9,14 +9,13 @@ import SwiftUI
 import CoreData
 
 struct TaskListView: View {
-    @Environment(\.managedObjectContext) private var viewContext
     @EnvironmentObject var taskViewModel: TaskViewModel
     @State var selectedFilter = TaskFilter.All
     
     var body: some View {
         NavigationView {
             VStack {
-                if filteredTaskItems() == [] {
+                if taskViewModel.filteredTaskItems() == [] {
                     HStack {
                         Text("No task to date")
                             .font(.title3)
@@ -24,7 +23,7 @@ struct TaskListView: View {
                         Spacer()
                     }
                     List {
-                        ForEach(filteredTaskItems()) { taskItem in
+                        ForEach(taskViewModel.filteredTaskItems()) { taskItem in
                             ZStack {
                                 NavigationLink(destination:
                                                 TaskEditView(passedTaskItem: taskItem, initialDate: Date()).environmentObject(taskViewModel)
@@ -36,7 +35,7 @@ struct TaskListView: View {
                                 Spacer()
                             }
                         }
-                        .onDelete(perform: deleteItems)
+                        .onDelete(perform: taskViewModel.deleteItems)
                     }
                     .listStyle(.plain)
                     .toolbar {
@@ -51,7 +50,7 @@ struct TaskListView: View {
                     }
                 } else {
                     List {
-                        ForEach(filteredTaskItems()) { taskItem in
+                        ForEach(taskViewModel.filteredTaskItems()) { taskItem in
                             ZStack {
                                 NavigationLink(destination:
                                                 TaskEditView(passedTaskItem: taskItem, initialDate: Date()).environmentObject(taskViewModel)
@@ -63,7 +62,7 @@ struct TaskListView: View {
                                 Spacer()
                             }
                         }
-                        .onDelete(perform: deleteItems)
+                        .onDelete(perform: taskViewModel.deleteItems)
                     }
                     .listStyle(.plain)
                     .toolbar {
@@ -101,29 +100,7 @@ struct TaskListView: View {
         .tint(.accentColor)
     }
     
-    private func filteredTaskItems() -> [TaskItem] {
-        if selectedFilter == TaskFilter.Completed {
-            return taskViewModel.taskItems.filter {$0.isCompleted()}
-        }
-        
-        if selectedFilter == TaskFilter.NonCompleted {
-            return taskViewModel.taskItems.filter {!$0.isCompleted()}
-        }
-        
-        if selectedFilter == TaskFilter.OverDue {
-            return taskViewModel.taskItems.filter {$0.isOverdue()}
-        }
-        
-        return taskViewModel.taskItems
-    }
     
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            offsets.map { filteredTaskItems()[$0] }.forEach(viewContext.delete)
-            
-            taskViewModel.saveContext(viewContext)
-        }
-    }
 }
 
 private let itemFormatter: DateFormatter = {

@@ -11,15 +11,14 @@ import SwiftUI
 @main
 struct AsakoApp: App {
     let persistenceController = PersistenceController.shared
-
+    @StateObject var viewModel = TaskViewModel()
     var body: some Scene {
         WindowGroup {
-            let context = persistenceController.container.viewContext
-            let dateHolder = TaskViewModel()
+            
             
             TaskListView()
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
-                .environmentObject(dateHolder)
+                .environmentObject(viewModel)
         }
     }
     
