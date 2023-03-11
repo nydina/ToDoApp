@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct TaskRow: View {
-    @EnvironmentObject var dateHolder: TaskViewModel
     var taskItem: TaskItem
     
     var body: some View {
@@ -33,10 +32,7 @@ struct TaskRow: View {
             }
             Spacer()
             PriorityView(taskItem: taskItem)
-                
-            
         }
-        
     }
 }
 

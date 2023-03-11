@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CheckBoxView: View {
     @Environment(\.managedObjectContext) private var viewContext
-    @EnvironmentObject var dateHolder: TaskViewModel
+    @EnvironmentObject var taskViewModel: TaskViewModel
     var taskItem: TaskItem
     
     var body: some View {
@@ -20,7 +20,7 @@ struct CheckBoxView: View {
                 withAnimation {
                     if !taskItem.isCompleted() {
                         taskItem.completedDate = Date()
-                        dateHolder.saveContext(viewContext)
+                        taskViewModel.saveContext(viewContext)
                     }
                 }
             }
