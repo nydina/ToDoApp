@@ -40,7 +40,8 @@ struct TaskEditView: View {
         }
     }
     
-    var body: some View {            Form {
+    var body: some View {
+        Form {
         Section("Task") {
             TextField("Task name", text: $name)
             TextField("Task description", text: $desc)
@@ -66,7 +67,7 @@ struct TaskEditView: View {
         }
         
         Button("Save") {
-            saveAction(completion: {task in
+            saveAction(completion: { task in
                 taskViewModel.scheduleNotification(task: task) })
             
         }
@@ -76,17 +77,13 @@ struct TaskEditView: View {
     .toolbar {
         ToolbarItem(placement: .navigationBarTrailing) {
             ShareLink(item: selectedTaskItem?.name ?? "", subject: Text("New task assigned to you"), message: Text("Task: \(selectedTaskItem?.name ?? ""), Task due date: \(selectedTaskItem?.dueDate?.formatted(date: .long, time: .shortened) ?? "")")) {
-                Image(systemName: "square.and.arrow.up")            }.disabled(name == "" || scheduleTime == false)
-                .accessibilityLabel("shareTask")
-            
+                Image(systemName: "square.and.arrow.up")
+            }
+            .disabled(name == "" || scheduleTime == false)
+            .accessibilityLabel("shareTask")
         }
-        
     }
-        
     .tint(.accentColor)
-        
-        
-        
     }
     
     func displayComps() -> DatePickerComponents {
@@ -116,8 +113,3 @@ struct TaskEditView: View {
     }
 }
 
-struct TaskEditView_Previews: PreviewProvider {
-    static var previews: some View {
-        TaskEditView(passedTaskItem: TaskItem(), initialDate: Date())
-    }
-}

@@ -8,13 +8,13 @@
 import SwiftUI
 
 struct PriorityView: View {
-    @ObservedObject var passedTaskItem: TaskItem
+    var taskItem: TaskItem
     
     var body: some View {
-        if passedTaskItem.isHighPriority() {
+        if taskItem.isHighPriority() {
             Image(systemName: "circle.fill")
                 .foregroundColor(.red)
-        } else if passedTaskItem.isNormalPriority() {
+        } else if taskItem.isNormalPriority() {
             Image(systemName: "circle.fill")
                 .foregroundColor(.orange)
         } else {

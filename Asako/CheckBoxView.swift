@@ -10,16 +10,16 @@ import SwiftUI
 struct CheckBoxView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @EnvironmentObject var dateHolder: TaskViewModel
-    @ObservedObject var passedTaskItem: TaskItem
+    var taskItem: TaskItem
     
     var body: some View {
-        Image(systemName: passedTaskItem.isCompleted() ? "checkmark.circle.fill" : "circle")
+        Image(systemName: taskItem.isCompleted() ? "checkmark.circle.fill" : "circle")
             .font(.largeTitle)
-            .foregroundColor(passedTaskItem.isCompleted() ? .accentColor : .secondary)
+            .foregroundColor(taskItem.isCompleted() ? .accentColor : .secondary)
             .onTapGesture {
                 withAnimation {
-                    if !passedTaskItem.isCompleted() {
-                        passedTaskItem.completedDate = Date()
+                    if !taskItem.isCompleted() {
+                        taskItem.completedDate = Date()
                         dateHolder.saveContext(viewContext)
                     }
                 }

@@ -32,7 +32,7 @@ struct TaskListView: View {
                                     EmptyView()
                                 }
                                 
-                                TaskRow(passedTaskItem: taskItem)
+                                TaskRow(taskItem: taskItem)
                                 Spacer()
                             }
                         }
@@ -59,7 +59,7 @@ struct TaskListView: View {
                                     EmptyView()
                                 }
                                 
-                                TaskRow(passedTaskItem: taskItem)
+                                TaskRow(taskItem: taskItem)
                                 Spacer()
                             }
                         }
