@@ -23,6 +23,20 @@ class TaskViewModel: ObservableObject {
         fecthTasks()
     }
     
+    func filterTaskItems() -> [TaskItem] {
+        switch selectedFilter {
+        case .Completed:
+            return taskItems.filter { $0.isCompleted() }
+        case .NonCompleted:
+            return taskItems.filter { !$0.isCompleted() }
+        case .OverDue:
+            return taskItems.filter { $0.isOverdue() }
+        case .All:
+            return taskItems
+        }
+    }
+
+    
     func fecthTasks() {
         let request = NSFetchRequest<TaskItem>(entityName: "TaskItem")
         request.sortDescriptors = sortOrder()

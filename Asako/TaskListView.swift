@@ -11,12 +11,11 @@ import CoreData
 struct TaskListView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @EnvironmentObject var taskViewModel: TaskViewModel
-    @State var selectedFilter = TaskFilter.All
     
     var body: some View {
         NavigationView {
             VStack {
-                if filterTaskItems().isEmpty {
+                if taskViewModel.filterTaskItems().isEmpty {
                     HStack {
                         Text("No task to date")
                             .font(.title3)
@@ -24,7 +23,7 @@ struct TaskListView: View {
                         Spacer()
                     }
                     List {
-                        ForEach(filterTaskItems()) { taskItem in
+                        ForEach(taskViewModel.filterTaskItems()) { taskItem in
                             ZStack {
                                 NavigationLink(destination:
                                                 TaskEditView(passedTaskItem: taskItem, initialDate: Date()).environmentObject(taskViewModel)
@@ -41,7 +40,7 @@ struct TaskListView: View {
                     .listStyle(.plain)
                     .toolbar {
                         ToolbarItem(placement: .confirmationAction) {
-                            Picker("", selection: $selectedFilter.animation()) {
+                            Picker("", selection: $taskViewModel.selectedFilter.animation()) {
                                 ForEach(TaskFilter.allFilters, id: \.self) {
                                     filter in
                                     Text(filter.rawValue)
@@ -51,7 +50,7 @@ struct TaskListView: View {
                     }
                 } else {
                     List {
-                        ForEach(filterTaskItems()) { taskItem in
+                        ForEach(taskViewModel.filterTaskItems()) { taskItem in
                             ZStack {
                                 NavigationLink(destination:
                                                 TaskEditView(passedTaskItem: taskItem, initialDate: Date()).environmentObject(taskViewModel)
@@ -68,7 +67,7 @@ struct TaskListView: View {
                     .listStyle(.plain)
                     .toolbar {
                         ToolbarItem(placement: .confirmationAction) {
-                            Picker("", selection: $selectedFilter.animation()) {
+                            Picker("", selection: $taskViewModel.selectedFilter.animation()) {
                                 ForEach(TaskFilter.allFilters, id: \.self) {
                                     filter in
                                     Text(filter.rawValue)
@@ -102,22 +101,10 @@ struct TaskListView: View {
     }
     
     
-    func filterTaskItems() -> [TaskItem] {
-        switch selectedFilter {
-        case .Completed:
-            return taskViewModel.taskItems.filter { $0.isCompleted() }
-        case .NonCompleted:
-            return taskViewModel.taskItems.filter { !$0.isCompleted() }
-        case .OverDue:
-            return taskViewModel.taskItems.filter { $0.isOverdue() }
-        case .All:
-            return taskViewModel.taskItems
-        }
-    }
     
     private func deleteItems(offsets: IndexSet) {
         withAnimation {
-            offsets.map { filterTaskItems()[$0] }.forEach(viewContext.delete)
+            offsets.map { taskViewModel.filterTaskItems()[$0] }.forEach(viewContext.delete)
             
             taskViewModel.saveContext(viewContext)
         }
