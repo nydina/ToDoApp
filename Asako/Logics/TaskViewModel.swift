@@ -13,12 +13,11 @@ import UserNotifications
 
 
 class TaskViewModel: ObservableObject {
-    
+    let container = PersistenceController.shared.container
     
     @Published var date = Date()
+    @Published var selectedFilter = TaskFilter.All
     @Published var taskItems: [TaskItem] = []
-    
-    let container = PersistenceController.shared.container
     
     init() {
         fecthTasks()
@@ -54,39 +53,43 @@ class TaskViewModel: ObservableObject {
             fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
         }
     }
-
+    
     
     func scheduleNotification(task: TaskItem) {
-        // Configuring the notification content
+        let notificationCenter = UNUserNotificationCenter.current()
+        let identifier = task.id?.uuidString ?? UUID().uuidString
+        
+        // Remove any existing notification requests for the task
+        notificationCenter.removePendingNotificationRequests(withIdentifiers: [identifier])
+        
+        // Check if the task is completed before scheduling a notification
+        guard task.completedDate == nil else {
+            return
+        }
+        
+        // Configure the notification content
         let content = UNMutableNotificationContent()
         content.title = "A task is due"
         content.body = "\(task.name!), due for: \(task.dueDate!)"
         
-        // Configure the recurring date.
+        // Configure the trigger for the notification
         let calendar = Calendar.current
-
-        // notify 1hour before deadline
         let justBeforeDueDate = calendar.date(byAdding: .hour, value: -1, to: task.dueDate ?? Date())
         let dateComponents = calendar.dateComponents([.year, .month, .day, .hour, .minute], from: justBeforeDueDate ?? Date())
-       
-           
-        // Create the trigger as a repeating event.
-        let trigger = UNCalendarNotificationTrigger(
-                 dateMatching: dateComponents, repeats: false)
+        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
         
-        // Create the request
-        let uuidString = UUID().uuidString
-        let request = UNNotificationRequest(identifier: task.id?.uuidString ?? uuidString,
-                    content: content, trigger: trigger)
-
-        // Schedule the request with the system.
-        let notificationCenter = UNUserNotificationCenter.current()
+        // Create the notification request
+        let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+        
+        // Schedule the new request with the system
         notificationCenter.add(request) { (error) in
-           if error != nil {
-              // Handle any errors.
-           }
+            if let error = error {
+                // Handle any errors.
+                print("Error scheduling notification: \(error)")
+            } else {
+                print("Notification scheduled successfully")
+            }
         }
-        
     }
 }
 

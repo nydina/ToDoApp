@@ -67,8 +67,8 @@ struct TaskEditView: View {
         }
         
         Button("Save") {
-            saveAction(completion: { task in
-                taskViewModel.scheduleNotification(task: task) })
+            saveAction()
+            taskViewModel.scheduleNotification(task: selectedTaskItem!)
             
         }
         .disabled(name == "")
@@ -90,7 +90,7 @@ struct TaskEditView: View {
         return scheduleTime ? [.hourAndMinute,  .date] : [.date]
     }
     
-    func saveAction(completion: (_ task: TaskItem)-> Void) {
+    func saveAction() {
         withAnimation {
             if selectedTaskItem == nil {
                 selectedTaskItem = TaskItem(context: viewContext)
@@ -102,12 +102,7 @@ struct TaskEditView: View {
             selectedTaskItem?.priority = priority
             selectedTaskItem?.dueDate = dueDate
             selectedTaskItem?.scheduleTime = scheduleTime
-            
             taskViewModel.saveContext(viewContext)
-            
-            if let selectedTaskItem = selectedTaskItem {
-                completion(selectedTaskItem)
-            }
             dismiss()
         }
     }
