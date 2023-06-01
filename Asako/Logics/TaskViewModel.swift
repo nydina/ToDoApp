@@ -35,7 +35,7 @@ class TaskViewModel: ObservableObject {
             return taskItems
         }
     }
-
+    
     
     func fecthTasks() {
         let request = NSFetchRequest<TaskItem>(entityName: "TaskItem")
@@ -65,6 +65,13 @@ class TaskViewModel: ObservableObject {
         } catch {
             let nsError = error as NSError
             fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+        }
+    }
+    
+    func deleteItems(offsets: IndexSet, context: NSManagedObjectContext) {
+        withAnimation {
+            offsets.map { filterTaskItems()[$0] }.forEach(context.delete)
+            saveContext(context)
         }
     }
     

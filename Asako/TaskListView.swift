@@ -35,7 +35,9 @@ struct TaskListView: View {
                                 Spacer()
                             }
                         }
-                        .onDelete(perform: deleteItems)
+                        .onDelete { indexSet in
+                            taskViewModel.deleteItems(offsets: indexSet, context: viewContext)
+                        }
                     }
                     .listStyle(.plain)
                     .toolbar {
@@ -62,7 +64,9 @@ struct TaskListView: View {
                                 Spacer()
                             }
                         }
-                        .onDelete(perform: deleteItems)
+                        .onDelete { indexSet in
+                            taskViewModel.deleteItems(offsets: indexSet, context: viewContext)
+                        }
                     }
                     .listStyle(.plain)
                     .toolbar {
@@ -98,24 +102,6 @@ struct TaskListView: View {
         }
         
         .tint(.accentColor)
-    }
-    
-    
-    
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            offsets.map { taskViewModel.filterTaskItems()[$0] }.forEach(viewContext.delete)
-            
-            taskViewModel.saveContext(viewContext)
-        }
-    }
+    }    
 }
-
-private let itemFormatter: DateFormatter = {
-    let formatter = DateFormatter()
-    formatter.dateStyle = .short
-    formatter.timeStyle = .medium
-    return formatter
-}()
-
 
