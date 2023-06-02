@@ -20,20 +20,21 @@ struct TaskRow: View {
                 Text(taskItem.name!)
                     .strikethrough()
             } else {
-                Text(taskItem.name!)
+                Text(taskItem.name ?? "")
             }
             
             Spacer()
             
-            if let selectedTaskItem = taskViewModel.selectedTaskItem,
-               !selectedTaskItem.isCompleted() && selectedTaskItem.scheduleTime {
+            if !taskItem.isCompleted() && taskItem.scheduleTime {
                 VStack {
                     Image(systemName: "bell.fill")
-                    Text(selectedTaskItem.dueDate?.formatted(date: .numeric, time: .omitted) ?? "")
-                        .padding(.horizontal)
+                    if let dueDate = taskItem.dueDate {
+                        Text(dueDate.formatted(date: .numeric, time: .omitted))
+                            .padding(.horizontal)
+                    }
                 }
                 .font(.footnote)
-                .foregroundColor(selectedTaskItem.overdureColor())
+                .foregroundColor(taskItem.overdureColor())
                 .frame(maxWidth: .infinity, alignment: .trailing)
             }
             
@@ -41,6 +42,5 @@ struct TaskRow: View {
             
             PriorityView(taskItem: taskItem)
         }
-        
     }
 }

@@ -56,7 +56,7 @@ struct TaskListView: View {
                             }
                         }
                         .onDelete { indexSet in
-                            taskViewModel.deleteItems(offsets: indexSet, context: viewContext)
+                            taskViewModel.deleteTaskItem(offsets: indexSet, context: viewContext)
                         }
                     }
                     .listStyle(.plain)
