@@ -6,13 +6,14 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct TaskRow: View {
     var taskItem: TaskItem
-    
+    var viewContext: NSManagedObjectContext
     var body: some View {
         HStack {
-            CheckBoxView(taskItem: taskItem)
+            CheckBoxView(taskItem: taskItem, viewContext: viewContext)
             
             taskItem.isCompleted() ? Text(taskItem.name ?? "").strikethrough() : Text(taskItem.name ?? "")
             

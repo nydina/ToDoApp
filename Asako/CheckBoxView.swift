@@ -6,11 +6,12 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct CheckBoxView: View {
-    @Environment(\.managedObjectContext) private var viewContext
     @EnvironmentObject var taskViewModel: TaskViewModel
     var taskItem: TaskItem
+    var viewContext: NSManagedObjectContext
     
     var body: some View {
         Image(systemName: taskItem.isCompleted() ? "checkmark.circle.fill" : "circle")

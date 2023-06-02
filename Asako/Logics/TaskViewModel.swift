@@ -15,6 +15,7 @@ import UserNotifications
 class TaskViewModel: ObservableObject {
     let container = PersistenceController.shared.container
     
+    @Published var selectedTaskItem: TaskItem?
     @Published var date = Date()
     @Published var selectedFilter = TaskFilter.All
     @Published var taskItems: [TaskItem] = []
@@ -36,6 +37,30 @@ class TaskViewModel: ObservableObject {
         }
     }
     
+    func createNewTask(name: String, desc: String, priority: String, dueDate: Date, scheduleTime: Bool, viewContext: NSManagedObjectContext) {
+        let taskItem = TaskItem(context: viewContext)
+        taskItem.id = UUID()
+        taskItem.created = Date()
+        taskItem.name = name
+        taskItem.desc = desc
+        taskItem.priority = priority
+        taskItem.dueDate = dueDate
+        taskItem.scheduleTime = scheduleTime
+        
+        saveContext(viewContext)
+    }
+    
+    func updateTask(id: UUID, name: String, desc: String, priority: String, dueDate: Date, scheduleTime: Bool, viewContext: NSManagedObjectContext) {
+        if let taskItem = taskItems.first(where: { $0.id == id }) {
+            taskItem.name = name
+            taskItem.desc = desc
+            taskItem.priority = priority
+            taskItem.dueDate = dueDate
+            taskItem.scheduleTime = scheduleTime
+            
+            saveContext(viewContext)
+        }
+    }
     
     func fecthTasks() {
         let request = NSFetchRequest<TaskItem>(entityName: "TaskItem")
@@ -49,15 +74,6 @@ class TaskViewModel: ObservableObject {
         }
     }
     
-    private func sortOrder() -> [NSSortDescriptor] {
-        let completedDateSort = NSSortDescriptor(keyPath: \TaskItem.completedDate, ascending: true)
-        let timeSort = NSSortDescriptor(keyPath: \TaskItem.scheduleTime, ascending: true)
-        let dueDateSort = NSSortDescriptor(keyPath: \TaskItem.dueDate, ascending: true)
-        
-        return [completedDateSort, timeSort, dueDateSort]
-    }
-    
-    
     func saveContext(_ context: NSManagedObjectContext) {
         do {
             try context.save()
@@ -66,6 +82,14 @@ class TaskViewModel: ObservableObject {
             let nsError = error as NSError
             fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
         }
+    }
+    
+    private func sortOrder() -> [NSSortDescriptor] {
+        let completedDateSort = NSSortDescriptor(keyPath: \TaskItem.completedDate, ascending: true)
+        let timeSort = NSSortDescriptor(keyPath: \TaskItem.scheduleTime, ascending: true)
+        let dueDateSort = NSSortDescriptor(keyPath: \TaskItem.dueDate, ascending: true)
+        
+        return [completedDateSort, timeSort, dueDateSort]
     }
     
     func deleteItems(offsets: IndexSet, context: NSManagedObjectContext) {

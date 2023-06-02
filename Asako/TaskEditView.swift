@@ -4,16 +4,14 @@
 //
 //  Created by Dina Andrianarijaona on 04/01/2023.
 //
-
 import SwiftUI
 
 struct TaskEditView: View {
-    
+    @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var taskViewModel: TaskViewModel
-    @Environment(\.managedObjectContext) private var viewContext
     
-    @State var selectedTaskItem: TaskItem?
+    @State var taskItem: TaskItem?
     @State var name: String
     @State var desc: String
     @State var priority =  "High"
@@ -21,90 +19,55 @@ struct TaskEditView: View {
     @State var scheduleTime: Bool
     
     init(passedTaskItem: TaskItem?, initialDate: Date) {
-        if let taskItem = passedTaskItem {
-            
-            _selectedTaskItem = State(initialValue: taskItem)
-            _name = State(initialValue: taskItem.name ?? "")
-            _desc = State(initialValue: taskItem.desc ?? "")
-            _priority = State(initialValue: taskItem.priority ?? "Normal")
-            _dueDate = State(initialValue: taskItem.dueDate ?? initialDate)
-            _scheduleTime = State(initialValue: taskItem.scheduleTime)
-        }
-        else {
-            
-            _name = State(initialValue: "")
-            _desc = State(initialValue: "")
-            _priority = State(initialValue: "High")
-            _dueDate = State(initialValue: initialDate)
-            _scheduleTime = State(initialValue: false)
-        }
+        _taskItem = State(initialValue: passedTaskItem)
+        _name = State(initialValue: passedTaskItem?.name ?? "")
+        _desc = State(initialValue: passedTaskItem?.desc ?? "")
+        _priority = State(initialValue: passedTaskItem?.priority ?? "Normal")
+        _dueDate = State(initialValue: passedTaskItem?.dueDate ?? initialDate)
+        _scheduleTime = State(initialValue: passedTaskItem?.scheduleTime ?? false)
     }
     
     var body: some View {
         Form {
-        Section("Task") {
-            TextField("Task name", text: $name)
-            TextField("Task description", text: $desc)
-        }
-        Section("Priority") {
-            Picker("", selection: $priority) {
-                ForEach(["High", "Normal", "Low"], id: \.self) { priority in
-                    Text(priority)
-                }
-            }              .frame(maxWidth: .infinity)
-                .pickerStyle(.segmented)
-        }
-        Section("Due Date") {
-            Toggle("Schedule Time", isOn: $scheduleTime)
-            DatePicker("Due Date", selection: $dueDate,in: Date()..., displayedComponents: displayComps())
-        }
-        
-        if selectedTaskItem?.isCompleted() ?? false {
-            Section("Completed", content: {
-                Text(selectedTaskItem?.completedDate?.formatted(date: .abbreviated, time: .shortened) ?? "")
-                    .foregroundColor(.green)
-            })
-        }
-        
-        Button("Save") {
-            saveAction()
-            taskViewModel.scheduleNotification(task: selectedTaskItem!)
-            
-        }
-        .disabled(name == "")
-        .frame(maxWidth: .infinity, alignment: .center)
-    }
-    .toolbar {
-        ToolbarItem(placement: .navigationBarTrailing) {
-            ShareLink(item: selectedTaskItem?.name ?? "", subject: Text("New task assigned to you"), message: Text("Task: \(selectedTaskItem?.name ?? ""), Task due date: \(selectedTaskItem?.dueDate?.formatted(date: .long, time: .shortened) ?? "")")) {
-                Image(systemName: "square.and.arrow.up")
+            Section("Task") {
+                TextField("Task name", text: $name)
+                TextField("Task description", text: $desc)
             }
-            .disabled(name == "" || scheduleTime == false)
-            .accessibilityLabel("shareTask")
+            Section("Priority") {
+                Picker("", selection: $priority) {
+                    ForEach(["High", "Normal", "Low"], id: \.self) { priority in
+                        Text(priority)
+                    }
+                }
+                .frame(maxWidth: .infinity)
+                .pickerStyle(.segmented)
+            }
+            Section("Due Date") {
+                Toggle("Schedule Time", isOn: $scheduleTime)
+                DatePicker("Due Date", selection: $dueDate, in: Date()..., displayedComponents: displayComps())
+            }
+            
+            Button("Save") {
+                saveAction()
+            }
+            .disabled(name == "")
+            .frame(maxWidth: .infinity, alignment: .center)
         }
-    }
-    .tint(.accentColor)
     }
     
     func displayComps() -> DatePickerComponents {
-        return scheduleTime ? [.hourAndMinute,  .date] : [.date]
+        return scheduleTime ? [.hourAndMinute, .date] : [.date]
     }
     
     func saveAction() {
-        withAnimation {
-            if selectedTaskItem == nil {
-                selectedTaskItem = TaskItem(context: viewContext)
-            }
-            selectedTaskItem?.id = UUID()
-            selectedTaskItem?.created = Date()
-            selectedTaskItem?.name = name
-            selectedTaskItem?.desc = desc
-            selectedTaskItem?.priority = priority
-            selectedTaskItem?.dueDate = dueDate
-            selectedTaskItem?.scheduleTime = scheduleTime
-            taskViewModel.saveContext(viewContext)
-            dismiss()
+        if let taskItem = taskItem {
+            taskViewModel.updateTask(id: taskItem.id!, name: name, desc: desc, priority: priority, dueDate: dueDate, scheduleTime: scheduleTime, viewContext: viewContext)
+        } else {
+            taskViewModel.createNewTask(name: name, desc: desc, priority: priority, dueDate: dueDate, scheduleTime: scheduleTime, viewContext: viewContext)
         }
+        
+        taskViewModel.saveContext(viewContext)
+        taskViewModel.fecthTasks()
+        dismiss()
     }
 }
-

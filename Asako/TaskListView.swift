@@ -15,15 +15,18 @@ struct TaskListView: View {
     var body: some View {
         NavigationView {
             VStack {
-                if taskViewModel.filterTaskItems().isEmpty {
+                let filteredTaskItems = taskViewModel.filterTaskItems()
+                
+                if filteredTaskItems.isEmpty {
                     HStack {
                         Text("No task to date")
                             .font(.title3)
                             .padding()
                         Spacer()
                     }
-                    List {
-                        ForEach(taskViewModel.filterTaskItems()) { taskItem in
+                    
+                    let taskList = List {
+                        ForEach(filteredTaskItems) { taskItem in
                             ZStack {
                                 NavigationLink(destination:
                                                 TaskEditView(passedTaskItem: taskItem, initialDate: Date()).environmentObject(taskViewModel)
@@ -31,7 +34,7 @@ struct TaskListView: View {
                                     EmptyView()
                                 }
                                 
-                                TaskRow(taskItem: taskItem)
+                                TaskRow(taskItem: taskItem, viewContext: viewContext)
                                 Spacer()
                             }
                         }
@@ -40,19 +43,23 @@ struct TaskListView: View {
                         }
                     }
                     .listStyle(.plain)
-                    .toolbar {
-                        ToolbarItem(placement: .confirmationAction) {
-                            Picker("", selection: $taskViewModel.selectedFilter.animation()) {
-                                ForEach(TaskFilter.allFilters, id: \.self) {
-                                    filter in
-                                    Text(filter.rawValue)
-                                }
+                    
+                    let toolbarItem = ToolbarItem(placement: .confirmationAction) {
+                        Picker("", selection: $taskViewModel.selectedFilter.animation()) {
+                            ForEach(TaskFilter.allFilters, id: \.self) {
+                                filter in
+                                Text(filter.rawValue)
                             }
                         }
                     }
+                    
+                    taskList
+                        .toolbar {
+                            toolbarItem
+                        }
                 } else {
-                    List {
-                        ForEach(taskViewModel.filterTaskItems()) { taskItem in
+                    let taskList = List {
+                        ForEach(filteredTaskItems) { taskItem in
                             ZStack {
                                 NavigationLink(destination:
                                                 TaskEditView(passedTaskItem: taskItem, initialDate: Date()).environmentObject(taskViewModel)
@@ -60,29 +67,36 @@ struct TaskListView: View {
                                     EmptyView()
                                 }
                                 
-                                TaskRow(taskItem: taskItem)
+                                TaskRow(taskItem: taskItem, viewContext: viewContext)
                                 Spacer()
                             }
                         }
                         .onDelete { indexSet in
                             taskViewModel.deleteItems(offsets: indexSet, context: viewContext)
                         }
+                        
                     }
+                        
                     .listStyle(.plain)
-                    .toolbar {
-                        ToolbarItem(placement: .confirmationAction) {
-                            Picker("", selection: $taskViewModel.selectedFilter.animation()) {
-                                ForEach(TaskFilter.allFilters, id: \.self) {
-                                    filter in
-                                    Text(filter.rawValue)
-                                }
+                    
+                    let toolbarItem = ToolbarItem(placement: .confirmationAction) {
+                        Picker("", selection: $taskViewModel.selectedFilter.animation()) {
+                            ForEach(TaskFilter.allFilters, id: \.self) {
+                                filter in
+                                Text(filter.rawValue)
                             }
                         }
                     }
+                    
+                    taskList
+                        .toolbar {
+                            toolbarItem
+                        }
                 }
                 
                 NavigationLink {
                     TaskEditView(passedTaskItem: nil, initialDate: Date())
+                        .environmentObject(taskViewModel)
                 } label: {
                     HStack {
                         Image(systemName: "plus.circle.fill")
@@ -93,15 +107,11 @@ struct TaskListView: View {
                             .frame(maxWidth: .infinity, alignment: .leading)
                     }
                     .padding(.leading)
-                    
                 }
                 .accessibilityLabel("Add new task")
-                
             }
             .navigationTitle("To Do List")
         }
-        
         .tint(.accentColor)
-    }    
+    }
 }
-
