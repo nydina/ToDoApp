@@ -48,6 +48,7 @@ class TaskViewModel: ObservableObject {
         taskItem.scheduleTime = scheduleTime
         
         saveContext(viewContext)
+        scheduleNotification(task: taskItem)
     }
     
     func updateTask(id: UUID, name: String, desc: String, priority: String, dueDate: Date, scheduleTime: Bool, viewContext: NSManagedObjectContext) {
@@ -59,6 +60,7 @@ class TaskViewModel: ObservableObject {
             taskItem.scheduleTime = scheduleTime
             
             saveContext(viewContext)
+            scheduleNotification(task: taskItem)
         }
     }
     

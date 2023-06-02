@@ -14,12 +14,12 @@ struct CheckBoxView: View {
     var viewContext: NSManagedObjectContext
     
     var body: some View {
-        Image(systemName: taskItem.isCompleted() ? "checkmark.circle.fill" : "circle")
+        Image(systemName: taskViewModel.selectedTaskItem?.isCompleted() ?? taskItem.isCompleted() ? "checkmark.circle.fill" : "circle")
             .font(.largeTitle)
-            .foregroundColor(taskItem.isCompleted() ? .accentColor : .secondary)
+            .foregroundColor(taskViewModel.selectedTaskItem?.isCompleted() ?? taskItem.isCompleted()  ? .accentColor : .secondary)
             .onTapGesture {
                 withAnimation {
-                    if !taskItem.isCompleted() {
+                    if !(taskViewModel.selectedTaskItem?.isCompleted() ?? false)  {
                         taskItem.completedDate = Date()
                         taskViewModel.saveContext(viewContext)
                     }

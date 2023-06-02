@@ -12,53 +12,36 @@ struct TaskListView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @EnvironmentObject var taskViewModel: TaskViewModel
     
+    var filteredTaskItems: [TaskItem] {
+        taskViewModel.filterTaskItems()
+    }
+    
     var body: some View {
         NavigationView {
             VStack {
-                let filteredTaskItems = taskViewModel.filterTaskItems()
-                
                 if filteredTaskItems.isEmpty {
-                    HStack {
-                        Text("No task to date")
-                            .font(.title3)
-                            .padding()
+                    VStack {
+                        HStack{
+                            Text("No task to date")
+                                .font(.title3)
+                                .padding()
+                            
+                            Spacer()
+                        }
                         Spacer()
                     }
-                    
-                    let taskList = List {
-                        ForEach(filteredTaskItems) { taskItem in
-                            ZStack {
-                                NavigationLink(destination:
-                                                TaskEditView(passedTaskItem: taskItem, initialDate: Date()).environmentObject(taskViewModel)
-                                ) {
-                                    EmptyView()
+                    .toolbar {
+                        ToolbarItem(placement: .confirmationAction) {
+                            Picker("", selection: $taskViewModel.selectedFilter.animation()) {
+                                ForEach(TaskFilter.allFilters, id: \.self) {
+                                    filter in
+                                    Text(filter.rawValue)
                                 }
-                                
-                                TaskRow(taskItem: taskItem, viewContext: viewContext)
-                                Spacer()
-                            }
-                        }
-                        .onDelete { indexSet in
-                            taskViewModel.deleteItems(offsets: indexSet, context: viewContext)
-                        }
-                    }
-                    .listStyle(.plain)
-                    
-                    let toolbarItem = ToolbarItem(placement: .confirmationAction) {
-                        Picker("", selection: $taskViewModel.selectedFilter.animation()) {
-                            ForEach(TaskFilter.allFilters, id: \.self) {
-                                filter in
-                                Text(filter.rawValue)
                             }
                         }
                     }
-                    
-                    taskList
-                        .toolbar {
-                            toolbarItem
-                        }
                 } else {
-                    let taskList = List {
+                    List {
                         ForEach(filteredTaskItems) { taskItem in
                             ZStack {
                                 NavigationLink(destination:
@@ -67,31 +50,26 @@ struct TaskListView: View {
                                     EmptyView()
                                 }
                                 
-                                TaskRow(taskItem: taskItem, viewContext: viewContext)
+                                TaskRow(taskItem: taskItem)
+                                
                                 Spacer()
                             }
                         }
                         .onDelete { indexSet in
                             taskViewModel.deleteItems(offsets: indexSet, context: viewContext)
                         }
-                        
                     }
-                        
                     .listStyle(.plain)
-                    
-                    let toolbarItem = ToolbarItem(placement: .confirmationAction) {
-                        Picker("", selection: $taskViewModel.selectedFilter.animation()) {
-                            ForEach(TaskFilter.allFilters, id: \.self) {
-                                filter in
-                                Text(filter.rawValue)
+                    .toolbar {
+                        ToolbarItem(placement: .confirmationAction) {
+                            Picker("", selection: $taskViewModel.selectedFilter.animation()) {
+                                ForEach(TaskFilter.allFilters, id: \.self) {
+                                    filter in
+                                    Text(filter.rawValue)
+                                }
                             }
                         }
                     }
-                    
-                    taskList
-                        .toolbar {
-                            toolbarItem
-                        }
                 }
                 
                 NavigationLink {
