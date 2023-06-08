@@ -74,6 +74,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1017F8EE2A3224FD001314E2 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				BB13E6702965A19400F75B9E /* TaskListView.swift */,
+				BB13E6832965D93500F75B9E /* TaskRow.swift */,
+				BB13E6812965C41C00F75B9E /* TaskEditView.swift */,
+				BB4B10582966DB79003C9772 /* CheckBoxView.swift */,
+				BB4B106229686B1F003C9772 /* PriorityView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		BB04B5E829B0F00500343F15 /* AsakoUITests */ = {
 			isa = PBXGroup;
 			children = (
@@ -105,11 +117,7 @@
 		BB13E66D2965A19400F75B9E /* Asako */ = {
 			isa = PBXGroup;
 			children = (
-				BB13E6702965A19400F75B9E /* TaskListView.swift */,
-				BB13E6832965D93500F75B9E /* TaskRow.swift */,
-				BB13E6812965C41C00F75B9E /* TaskEditView.swift */,
-				BB4B10582966DB79003C9772 /* CheckBoxView.swift */,
-				BB4B106229686B1F003C9772 /* PriorityView.swift */,
+				1017F8EE2A3224FD001314E2 /* Views */,
 				BB13E6722965A19600F75B9E /* Assets.xcassets */,
 				BB4B105B2966DD35003C9772 /* Logics */,
 				BB13E6792965A19600F75B9E /* Asako.xcdatamodeld */,
