@@ -7,12 +7,22 @@
 
 import Foundation
 import SwiftUI
+import UserNotifications
 
 extension TaskItem {
+
+    func removePendingNotification() {
+        let notificationCenter = UNUserNotificationCenter.current()
+        guard let identifier = id?.uuidString else { return }
+        notificationCenter.removePendingNotificationRequests(withIdentifiers: [identifier])
+    }
     
     func isCompleted() -> Bool {
-        return completedDate != nil 
-    }
+            if completedDate != nil {
+                removePendingNotification()
+            }
+            return completedDate != nil
+        }
     
     func isOverdue() -> Bool {
         if let due = dueDate {
@@ -28,11 +38,14 @@ extension TaskItem {
     func isHighPriority() -> Bool {
         return priority == "High"
     }
+    
     func isNormalPriority() -> Bool {
         return priority == "Normal"
     }
+    
     func isLowPriority() -> Bool {
         return priority == "Low"
     }
     
 }
+
