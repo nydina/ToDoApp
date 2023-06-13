@@ -9,7 +9,6 @@ import SwiftUI
 import CoreData
 
 struct TaskListView: View {
-    @Environment(\.managedObjectContext) private var viewContext
     @EnvironmentObject var taskViewModel: TaskViewModel
     
     var filteredTaskItems: [TaskItem] {
@@ -56,7 +55,7 @@ struct TaskListView: View {
                             }
                         }
                         .onDelete { indexSet in
-                            taskViewModel.deleteTaskItem(offsets: indexSet, context: viewContext)
+                            taskViewModel.deleteTaskItem(offsets: indexSet)
                         }
                     }
                     .listStyle(.plain)

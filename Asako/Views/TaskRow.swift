@@ -8,13 +8,12 @@ import SwiftUI
 import CoreData
 
 struct TaskRow: View {
-    @Environment(\.managedObjectContext) private var viewContext
     @EnvironmentObject var taskViewModel: TaskViewModel
     let taskItem: TaskItem
     
     var body: some View {
         HStack {
-            CheckBoxView(taskItem: taskItem, viewContext: viewContext)
+            CheckBoxView(taskItem: taskItem)
             
             if taskItem.isCompleted() {
                 Text(taskItem.name!)

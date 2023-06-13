@@ -11,7 +11,6 @@ import CoreData
 struct CheckBoxView: View {
     @EnvironmentObject var taskViewModel: TaskViewModel
     var taskItem: TaskItem
-    var viewContext: NSManagedObjectContext
     
     var body: some View {
         Image(systemName: taskViewModel.selectedTaskItem?.isCompleted() ?? taskItem.isCompleted() ? "checkmark.circle.fill" : "circle")
@@ -21,7 +20,7 @@ struct CheckBoxView: View {
                 withAnimation {
                     if !(taskViewModel.selectedTaskItem?.isCompleted() ?? false)  {
                         taskItem.completedDate = Date()
-                        taskViewModel.saveContext(viewContext)
+                        taskViewModel.saveContext()
                     }
                 }
             }

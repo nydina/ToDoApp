@@ -7,7 +7,6 @@
 import SwiftUI
 
 struct TaskEditView: View {
-    @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var taskViewModel: TaskViewModel
     
@@ -61,13 +60,13 @@ struct TaskEditView: View {
     
     func saveAction() {
         if let taskItem = taskItem {
-            taskViewModel.updateTask(id: taskItem.id!, name: name, desc: desc, priority: priority, dueDate: dueDate, scheduleTime: scheduleTime, viewContext: viewContext)
+            taskViewModel.updateTask(id: taskItem.id!, name: name, desc: desc, priority: priority, dueDate: dueDate, scheduleTime: scheduleTime)
         } else {
-            taskViewModel.createNewTask(name: name, desc: desc, priority: priority, dueDate: dueDate, scheduleTime: scheduleTime, viewContext: viewContext)
+            taskViewModel.createNewTask(name: name, desc: desc, priority: priority, dueDate: dueDate, scheduleTime: scheduleTime)
         }
         
-        taskViewModel.saveContext(viewContext)
-        taskViewModel.fecthTasks()
+        taskViewModel.saveContext()
+        taskViewModel.fetchTasks()
         dismiss()
     }
 }

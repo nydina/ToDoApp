@@ -12,15 +12,20 @@ import UserNotifications
 
 // View model for managing tasks
 class TaskViewModel: ObservableObject {
-    let container = PersistenceController.shared.container // Core Data persistent container
+    private let container: NSPersistentContainer
+    private let userNotificationCenter: UNUserNotificationCenter
     
     @Published var selectedTaskItem: TaskItem? // Currently selected task item
     @Published var date = Date() // Selected date for filtering tasks
     @Published var selectedFilter = TaskFilter.All // Selected filter for tasks
     @Published var taskItems: [TaskItem] = [] // Array of task items
     
-    init() {
-        fecthTasks() // Fetch tasks from Core Data during initialization
+    // Initialize the view model with the persistent container and user notification center
+    init(container: NSPersistentContainer, userNotificationCenter: UNUserNotificationCenter = UNUserNotificationCenter.current()) {
+        self.container = container
+        self.userNotificationCenter = userNotificationCenter
+        
+        fetchTasks()
     }
     
     // Filter task items based on the selected filter
@@ -37,9 +42,8 @@ class TaskViewModel: ObservableObject {
         }
     }
     
-    // Create a new task with the provided parameters
-    func createNewTask(name: String, desc: String, priority: String, dueDate: Date, scheduleTime: Bool, viewContext: NSManagedObjectContext) {
-        let taskItem = TaskItem(context: viewContext)
+    func createNewTask(name: String, desc: String, priority: String, dueDate: Date, scheduleTime: Bool) {
+        let taskItem = TaskItem(context: container.viewContext)
         taskItem.id = UUID()
         taskItem.created = Date()
         taskItem.name = name
@@ -48,11 +52,12 @@ class TaskViewModel: ObservableObject {
         taskItem.dueDate = dueDate
         taskItem.scheduleTime = scheduleTime
         scheduleNotification(task: taskItem) // Schedule a notification for the new task
-        saveContext(viewContext) // Save the context and fetch updated tasks
+        saveContext() // Save the context and fetch updated tasks
     }
     
+    
     // Update an existing task with the provided parameters
-    func updateTask(id: UUID, name: String, desc: String, priority: String, dueDate: Date, scheduleTime: Bool, viewContext: NSManagedObjectContext) {
+    func updateTask(id: UUID, name: String, desc: String, priority: String, dueDate: Date, scheduleTime: Bool) {
         if let taskItem = taskItems.first(where: { $0.id == id }) {
             taskItem.name = name
             taskItem.desc = desc
@@ -60,12 +65,12 @@ class TaskViewModel: ObservableObject {
             taskItem.dueDate = dueDate
             taskItem.scheduleTime = scheduleTime
             scheduleNotification(task: taskItem) // Update the scheduled notification for the task
-            saveContext(viewContext) // Save the context and fetch updated tasks
+            saveContext() // Save the context and fetch updated tasks
         }
     }
     
     // Fetch tasks from Core Data
-    func fecthTasks() {
+    func fetchTasks() {
         let request = NSFetchRequest<TaskItem>(entityName: "TaskItem")
         request.sortDescriptors = sortOrder() // Apply the specified sort order
         
@@ -77,10 +82,10 @@ class TaskViewModel: ObservableObject {
     }
     
     // Save changes to Core Data context
-    func saveContext(_ context: NSManagedObjectContext) {
+    func saveContext() {
         do {
-            try context.save() // Save the context
-            fecthTasks() // Fetch updated tasks
+            try container.viewContext.save() // Save the context
+            fetchTasks() // Fetch updated tasks
         } catch {
             let nsError = error as NSError
             fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
@@ -97,45 +102,46 @@ class TaskViewModel: ObservableObject {
     }
     
     // Delete a single task item from the context
-    func deleteTaskItem(offsets: IndexSet, context: NSManagedObjectContext) {
+    func deleteTaskItem(offsets: IndexSet) {
         let task = offsets.map { filterTaskItems()[$0]}
-        let notificationCenter = UNUserNotificationCenter.current()
+        
         let identifier = task.first?.id?.uuidString ?? UUID().uuidString
         
         // Remove any existing notification requests for the task
-        notificationCenter.removePendingNotificationRequests(withIdentifiers: [identifier])
+        userNotificationCenter.removePendingNotificationRequests(withIdentifiers: [identifier])
         
         withAnimation {
             // Delete the task item corresponding to the provided offset from the context
-            offsets.map { filterTaskItems()[$0] }.forEach(context.delete)
-            saveContext(context) // Save the context and fetch updated tasks
+            offsets.map { filterTaskItems()[$0] }.forEach(container.viewContext.delete)
+            saveContext() // Save the context and fetch updated tasks
         }
     }
-
+    
     // Schedule a notification for a task
     func scheduleNotification(task: TaskItem) {
-        let notificationCenter = UNUserNotificationCenter.current()
+        
+        //        let notificationCenter = UNUserNotificationCenter.current()
         let identifier = task.id?.uuidString ?? UUID().uuidString
-
+        
         // Configure the notification content
         let content = UNMutableNotificationContent()
         content.title = "A task is due"
         content.body = "\(task.name!), due for: \(task.dueDate!)"
-
+        
         // Configure the trigger for the notification
         let calendar = Calendar.current
         let justBeforeDueDate = calendar.date(byAdding: .hour, value: -1, to: task.dueDate ?? Date())
         let dateComponents = calendar.dateComponents([.year, .month, .day, .hour, .minute], from: justBeforeDueDate ?? Date())
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
-
+        
         // Remove any existing notification requests for the task
-        notificationCenter.removePendingNotificationRequests(withIdentifiers: [identifier])
-
+        userNotificationCenter.removePendingNotificationRequests(withIdentifiers: [identifier])
+        
         // Create the notification request
         let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
-
+        
         // Schedule the new request with the system
-        notificationCenter.add(request) { (error) in
+        userNotificationCenter.add(request) { (error) in
             if let error = error {
                 // Handle any errors.
                 print("Error scheduling notification: \(error)")
@@ -144,5 +150,4 @@ class TaskViewModel: ObservableObject {
             }
         }
     }
-
 }

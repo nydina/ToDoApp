@@ -15,11 +15,11 @@ struct AsakoApp: App {
     var body: some Scene {
         WindowGroup {
             let context = persistenceController.container.viewContext
-            let dateHolder = TaskViewModel()
+            let taskViewModel = TaskViewModel(container: persistenceController.container)
             
             TaskListView()
-                .environment(\.managedObjectContext, persistenceController.container.viewContext)
-                .environmentObject(dateHolder)
+                .environment(\.managedObjectContext, context)
+                .environmentObject(taskViewModel)
         }
     }
     
