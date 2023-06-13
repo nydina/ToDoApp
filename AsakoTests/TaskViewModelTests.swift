@@ -70,6 +70,24 @@ class TaskViewModelTests: XCTestCase {
         XCTAssertEqual(createdTask?.scheduleTime, scheduleTime, "Task schedule time did not match")
     }
     
+    func testCreateNewTaskWithEmptyName() {
+        // Given
+        let name = "" // Empty string for task name
+        let desc = "Test Description"
+        let priority = "High"
+        let dueDate = Date()
+        let scheduleTime = true
+
+        let taskCount = viewModel.taskItems.count
+
+        // When
+        viewModel.createNewTask(name: name, desc: desc, priority: priority, dueDate: dueDate, scheduleTime: scheduleTime)
+
+        // Then
+        XCTAssertEqual(viewModel.taskItems.count, taskCount, "Task count should not increase")
+        XCTAssertNil(viewModel.taskItems.first, "TaskItem should be nil")
+    }
+    
     func testUpdateTask() {
         // Given
         let taskId = UUID() // Existing task ID

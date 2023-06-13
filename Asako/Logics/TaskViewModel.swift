@@ -43,6 +43,10 @@ class TaskViewModel: ObservableObject {
     }
     
     func createNewTask(name: String, desc: String, priority: String, dueDate: Date, scheduleTime: Bool) {
+        guard !name.isEmpty else {
+            // Empty task name is not allowed, return early
+            return
+        }
         let taskItem = TaskItem(context: container.viewContext)
         taskItem.id = UUID()
         taskItem.created = Date()
