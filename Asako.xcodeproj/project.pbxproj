@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		100EEE2E2A3C7CF300EBEA99 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 100EEE2D2A3C7CF300EBEA99 /* Launch Screen.storyboard */; };
 		10E54ACA2A37586800E3B295 /* TaskViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10E54AC92A37586800E3B295 /* TaskViewModelTests.swift */; };
 		BB04B5EA29B0F00500343F15 /* AsakoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB04B5E929B0F00500343F15 /* AsakoUITests.swift */; };
 		BB04B5EC29B0F00500343F15 /* AsakoUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB04B5EB29B0F00500343F15 /* AsakoUITestsLaunchTests.swift */; };
@@ -44,6 +45,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		100EEE2D2A3C7CF300EBEA99 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		10E54AC02A3757FB00E3B295 /* AsakoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AsakoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		10E54AC92A37586800E3B295 /* TaskViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskViewModelTests.swift; sourceTree = "<group>"; };
 		BB04B5E729B0F00500343F15 /* AsakoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AsakoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -149,6 +151,7 @@
 				BB4B105B2966DD35003C9772 /* Logics */,
 				BB13E6792965A19600F75B9E /* Asako.xcdatamodeld */,
 				BB13E6742965A19600F75B9E /* Preview Content */,
+				100EEE2D2A3C7CF300EBEA99 /* Launch Screen.storyboard */,
 			);
 			path = Asako;
 			sourceTree = "<group>";
@@ -291,6 +294,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				100EEE2E2A3C7CF300EBEA99 /* Launch Screen.storyboard in Resources */,
 				BB13E6762965A19600F75B9E /* Preview Assets.xcassets in Resources */,
 				BB13E6732965A19600F75B9E /* Assets.xcassets in Resources */,
 			);
@@ -554,12 +558,13 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Asako/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = PNNF7SDSX3;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -567,7 +572,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = nydina.Asako;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nydina.asako;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -585,12 +590,13 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Asako/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = PNNF7SDSX3;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -598,7 +604,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = nydina.Asako;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nydina.asako;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
